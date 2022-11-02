@@ -25,6 +25,7 @@ import java.util.Map;
 
 /**
  * An interface for asynchronous, multi-channel network I/O
+ * 异步的，多路复用的IO
  */
 public interface Selectable {
 
