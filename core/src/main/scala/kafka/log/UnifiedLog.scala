@@ -48,6 +48,7 @@ import scala.jdk.CollectionConverters._
 import scala.collection.mutable.ListBuffer
 import scala.collection.{Seq, immutable, mutable}
 
+// LogAppendInfo的工厂类，定义一些工厂方法，用于创建特定的LogAppendInfo
 object LogAppendInfo {
   val UnknownLogAppendInfo = LogAppendInfo(None, -1, None, RecordBatch.NO_TIMESTAMP, -1L, RecordBatch.NO_TIMESTAMP, -1L,
     RecordConversionStats.EMPTY, NoCompressionCodec, NoCompressionCodec, -1, -1, offsetsMonotonic = false, -1L)
@@ -77,13 +78,17 @@ object LeaderHwChange {
 
 /**
  * Struct to hold various quantities we compute about each message set before appending to the log
+ * 保存一组待写入log的日志的各种元数据信息
  *
  * @param firstOffset The first offset in the message set unless the message format is less than V2 and we are appending
  *                    to the follower. If the message is a duplicate message the segment base offset and relative position
  *                    in segment will be unknown.
+ *                    第一个位移值
  * @param lastOffset The last offset in the message set
+ *                   最后一条位移值
  * @param lastLeaderEpoch The partition leader epoch corresponding to the last offset, if available.
  * @param maxTimestamp The maximum timestamp of the message set.
+ *                     最大消息时间戳
  * @param offsetOfMaxTimestamp The offset of the message with the maximum timestamp.
  * @param logAppendTime The log append time (if used) of the message set, otherwise Message.NoTimestamp
  * @param logStartOffset The start offset of the log at the time of this append.
@@ -140,6 +145,7 @@ case class LogAppendInfo(var firstOffset: Option[LogOffsetMetadata],
  * Container class which represents a snapshot of the significant offsets for a partition. This allows fetching
  * of these offsets atomically without the possibility of a leader change affecting their consistency relative
  * to each other. See [[UnifiedLog.fetchOffsetSnapshot()]].
+ * 封装分区所有位移元数据的容器类
  */
 case class LogOffsetSnapshot(logStartOffset: Long,
                              logEndOffset: LogOffsetMetadata,
@@ -148,6 +154,7 @@ case class LogOffsetSnapshot(logStartOffset: Long,
 
 /**
  * Another container which is used for lower level reads using  [[kafka.cluster.Partition.fetchRecords()]].
+ * 封装读取日志返回的数据及其元数据
  */
 case class LogReadInfo(fetchedData: FetchDataInfo,
                        divergingEpoch: Option[FetchResponseData.EpochEndOffset],
@@ -159,6 +166,7 @@ case class LogReadInfo(fetchedData: FetchDataInfo,
 /**
  * A class used to hold useful metadata about a completed transaction. This is used to build
  * the transaction index after appending to the log.
+ * 记录已完成事物的元数据，用于构建事务索引
  *
  * @param producerId The ID of the producer
  * @param firstOffset The first offset (inclusive) of the transaction
@@ -178,6 +186,7 @@ case class CompletedTxn(producerId: Long, firstOffset: Long, lastOffset: Long, i
 
 /**
  * A class used to hold params required to decide to rotate a log segment or not.
+ * 定义用于控制日志段是否切分（Roll）的数据结构
  */
 case class RollParams(maxSegmentMs: Long,
                       maxSegmentBytes: Int,
@@ -1771,6 +1780,7 @@ object UnifiedLog extends Logging {
 
   val TimeIndexFileSuffix = LocalLog.TimeIndexFileSuffix
 
+  // kafka为幂等型或事务型Producer所做的快照
   val ProducerSnapshotFileSuffix = ".snapshot"
 
   val TxnIndexFileSuffix = LocalLog.TxnIndexFileSuffix
@@ -2124,6 +2134,7 @@ object UnifiedLog extends Logging {
   }
 }
 
+// Log对象的监控指标
 object LogMetricNames {
   val NumLogSegments: String = "NumLogSegments"
   val LogStartOffset: String = "LogStartOffset"

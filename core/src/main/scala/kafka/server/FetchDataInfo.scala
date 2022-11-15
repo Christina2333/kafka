@@ -85,7 +85,7 @@ object FetchDataInfo {
     )
   }
 }
-
+// 从segment读取指定大小消息的结果
 case class FetchDataInfo(
   fetchOffsetMetadata: LogOffsetMetadata,
   records: Records,

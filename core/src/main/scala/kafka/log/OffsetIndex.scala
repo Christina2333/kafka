@@ -158,6 +158,7 @@ class OffsetIndex(_file: File, baseOffset: Long, maxIndexSize: Int = -1, writabl
 
   override def truncate(): Unit = truncateToEntries(0)
 
+  // 截断offset之后的内容
   override def truncateTo(offset: Long): Unit = {
     inLock(lock) {
       val idx = mmap.duplicate

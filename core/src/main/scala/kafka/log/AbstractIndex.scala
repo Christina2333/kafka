@@ -353,6 +353,7 @@ abstract class AbstractIndex(@volatile private var _file: File, val baseOffset: 
   /**
    * Find the slot in which the largest entry less than or equal to the given target key or value is stored.
    * The comparison is made using the `IndexEntry.compareTo()` method.
+   * 寻找最大的日志小于等于给定target值或者的slot
    *
    * @param idx The index buffer
    * @param target The index key to look for

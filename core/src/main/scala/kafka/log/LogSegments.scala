@@ -28,6 +28,8 @@ import scala.jdk.CollectionConverters._
 /**
  * This class encapsulates a thread-safe navigable map of LogSegment instances and provides the
  * required read and write behavior on the map.
+ * 这个类封装了一组线程安全的，可通过map定位的多个LogSegment实例，提供map的读写方法，
+ * 对应kafka broker端日志路径下一个分区文件夹
  *
  * @param topicPartition the TopicPartition associated with the segments
  *                        (useful for logging purposes)

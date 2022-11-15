@@ -46,12 +46,15 @@ import scala.annotation.nowarn
 /**
  * The entry point to the kafka log management subsystem. The log manager is responsible for log creation, retrieval, and cleaning.
  * All read and write operations are delegated to the individual log instances.
+ * 这是kafka log管理子系统的入口。这个log管理系统负责log创建，检索、清理。所有的读写操作都委托给各个log实例
  *
  * The log manager maintains logs in one or more directories. New logs are created in the data directory
  * with the fewest logs. No attempt is made to move partitions after the fact or balance based on
  * size or I/O rate.
+ * log manager在一个或多个文件夹中维护log。新的log会在log最少的data文件中创建。没有尝试移动分区或根据大小或 I/O 速率进行平衡。
  *
  * A background thread handles log retention by periodically truncating excess log segments.
+ * 后台线程通过定期截断多余的日志段来处理日志保留。
  */
 @threadsafe
 class LogManager(logDirs: Seq[File],

@@ -124,6 +124,7 @@ public class FileRecords extends AbstractRecords implements Closeable {
     /**
      * Return a slice of records from this instance, which is a view into this set starting from the given position
      * and with the given size limit.
+     * 从position位置读取size大小的消息
      *
      * If the size is beyond the end of the file, the end will be based on the size of the file at the time of the read.
      *

@@ -605,18 +605,24 @@ object LocalLog extends Logging {
   private[log] val TxnIndexFileSuffix = ".txnindex"
 
   /** a file that is scheduled to be deleted */
+  // 删除日志段操作创建的文件，
+  // 删除日志段是异步的，Broker把日志段文件从.log修改为.deleted后缀，后面再删除
   private[log] val DeletedFileSuffix = ".deleted"
 
   /** A temporary file that is being used for log cleaning */
+  // Compaction的产物
   private[log] val CleanedFileSuffix = ".cleaned"
 
   /** A temporary file used when swapping files into the log */
+  // Compaction的产物
   private[log] val SwapFileSuffix = ".swap"
 
   /** a directory that is scheduled to be deleted */
+  // 应用在文件夹上，如果删除一个topic，topic的文件夹会加上这个后缀
   private[log] val DeleteDirSuffix = "-delete"
 
   /** a directory that is used for future partition */
+  // 用于变更topic分区文件夹地址，高阶用法
   private[log] val FutureDirSuffix = "-future"
 
   private[log] val DeleteDirPattern = Pattern.compile(s"^(\\S+)-(\\S+)\\.(\\S+)$DeleteDirSuffix")
@@ -627,13 +633,16 @@ object LocalLog extends Logging {
   /**
    * Make log segment file name from offset bytes. All this does is pad out the offset number with zeros
    * so that ls sorts the files numerically.
+   * 根据offset生成segment的文件名
    *
    * @param offset The offset to use in the file name
    * @return The filename
    */
   private[log] def filenamePrefixFromOffset(offset: Long): String = {
     val nf = NumberFormat.getInstance()
+    // 长度为20位
     nf.setMinimumIntegerDigits(20)
+    // 设置小数部分是0位
     nf.setMaximumFractionDigits(0)
     nf.setGroupingUsed(false)
     nf.format(offset)
